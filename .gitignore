@@ -1,0 +1,10 @@
+*.pyc
+*.log
+*.DS_Store
+__pycache__
+.vscode
+.aoc_session
+example*.txt
+times*.json
+show_times.py
+.python-version
