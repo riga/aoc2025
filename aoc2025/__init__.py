@@ -116,7 +116,7 @@ class Solver:
         header = f"🎄 {puzzle_id}"
         if self.has_session:
             header += f"  ─  {self.puzzle.title}"
-        header += f"  ─  {len(data)} data line{'' if len(data) == 1 else 's'}"
+        header += f"  ─  {len(data):_} data line{'' if len(data) == 1 else 's'}"
         header += " 🎄"
         width = max(len(header) + 2, 40)
         print(f"{'━' * width}\n{header}\n{'─' * width}")
@@ -136,9 +136,10 @@ class Solver:
         if result is None:
             print("❗️ no solution provided")
             return
-        print(f"✨ solution : {result}")
+        fmt_num = lambda x: f"{x:_}" if isinstance(x, (int, float)) else str(x)
+        print(f"✨ solution : {fmt_num(result)}")
         if not example and (truth := getattr(self, f"truth_{part}")) is not None:
-            print(f"{'✅' if result == truth else '❌'} truth    : {truth}")
+            print(f"{'✅' if result == truth else '❌'} truth    : {fmt_num(truth)}")
         print(f"⏰ runtime  : {human_time_diff(runtime)}")
 
         # check if submission is an option
