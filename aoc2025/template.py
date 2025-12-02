@@ -1,7 +1,7 @@
 # coding: utf-8
 
 """
-https://adventofcode.com/2025/day/000
+https://adventofcode.com/2025/day/0
 """
 
 from __future__ import annotations
@@ -14,5 +14,5 @@ def solution(data: list[str], part: Part) -> int | str | None:
 
 
 if __name__ == "__main__":
-    Solver(year=2025, day=000, truth_a=None, truth_b=None).solve(solution, part="a", example=True, submit=False)
-    Solver(year=2025, day=000, truth_a=None, truth_b=None).solve(solution, part="a", submit=False)
+    Solver(year=2025, day=0, truth_a=None, truth_b=None).solve(solution, part="a", example=True, submit=False)
+    Solver(year=2025, day=0, truth_a=None, truth_b=None).solve(solution, part="a", example=False, submit=False)

@@ -9,7 +9,7 @@ from __future__ import annotations
 from aoc2025 import Solver, Part
 
 
-def solution(data: list[str], part: Part) -> int | None:
+def solution(data: list[str], part: Part) -> int | str | None:
     pos = 50  # current position
     n = 0  # number of times at position 0
 
