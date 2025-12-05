@@ -33,7 +33,7 @@ def solution(data: list[str], part: Part) -> int | str | None:
     if part == "a":
         return sum(
             1 for a in available_ids
-            if any(start <= a <= stop for start, stop in id_ranges)
+            if any(start <= a <= stop for start, stop in merged_id_ranges)
         )
 
     # part b: sum extents
