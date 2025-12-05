@@ -77,40 +77,49 @@ class Solver:
         *,
         part: Part,
         submit: bool = True,
-        example: bool = False,
-        example_index: int = 0,
+        example: int | bool = False,
         strip: bool = True,
+        strip_empty: bool = True,
+        data: list[str] | None = None,
     ) -> None:
         assert part in {"a", "b", "x"}
 
+        # get example index if set
+        example_orig = example
+        example_index = 0
+        if not isinstance(example, bool):
+            example_index = example
+            example = True
+
+        # fetch data from local file, fallback to aocd
+        if data is None:
+            data_name = f"example{example_index or ''}" if example else "data"
+            data_name = f"{data_name}{self.day:02d}.txt"
+            data_path = os.path.join(data_dir, data_name)
+            if os.path.exists(data_path):
+                with open(data_path, "r") as f:
+                    data_raw = f.read()
+            else:
+                data_raw = (self.puzzle.examples[example_index] if example else self.puzzle).input_data
+                with open(data_path, "w") as f:
+                    f.write(data_raw)
+
+            # split into lines
+            data = data_raw.splitlines()
+            if strip:
+                data = [line for line in (line.strip() for line in data) if not strip_empty or line]
+
         # solve both parts when "x" is given
         if part == "x":
-            self.solve(func, part="a", submit=submit, example=example, example_index=example_index)
+            self.solve(func, part="a", submit=submit, example=example_orig, data=data)
             print("")
-            self.solve(func, part="b", submit=submit, example=example, example_index=example_index)
+            self.solve(func, part="b", submit=submit, example=example_orig, data=data)
             return
 
         # puzzle identifier
         puzzle_id = f"{self.year}_{self.day:02d}_{part}"
         if example:
             puzzle_id += f"_example{example_index or ''}"
-
-        # fetch data from local file, fallback to aocd
-        data_name = f"example{example_index or ''}" if example else "data"
-        data_name = f"{data_name}{self.day:02d}.txt"
-        data_path = os.path.join(data_dir, data_name)
-        if os.path.exists(data_path):
-            with open(data_path, "r") as f:
-                data_raw = f.read()
-        else:
-            data_raw = (self.puzzle.examples[example_index] if example else self.puzzle).input_data
-            with open(data_path, "w") as f:
-                f.write(data_raw)
-
-        # split into lines
-        data = data_raw.splitlines()
-        if strip:
-            data = [line for line in (line.strip() for line in data) if line]
 
         # header
         header = f"🎄 {puzzle_id}"

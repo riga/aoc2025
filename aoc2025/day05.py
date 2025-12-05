@@ -24,7 +24,7 @@ def solution(data: list[str], part: Part) -> int | str | None:
     merged_id_ranges = [id_ranges[0]]
     for start, stop in id_ranges[1:]:
         last_start, last_stop = merged_id_ranges[-1]
-        if start > last_stop:
+        if start > last_stop + 1:  # +1 -> connect adjacent ranges
             merged_id_ranges.append((start, stop))
         elif stop > last_stop:
             merged_id_ranges[-1] = (last_start, stop)
