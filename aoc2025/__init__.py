@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import time
+import copy
 from typing import Callable, Literal, Any, Self, TypeAlias
 
 
@@ -70,6 +71,9 @@ class Solver:
     def has_session(self) -> bool:
         return bool(os.getenv("AOC_SESSION", ""))
 
+    def __call__(self, *args, **kwargs) -> None:
+        return self.solve(*args, **kwargs)
+
     def solve(
         self,
         func: Callable[[list[str], Part], int | str | None],
@@ -134,7 +138,7 @@ class Solver:
         t1 = time.perf_counter()
         runtime: float = 0
         try:
-            result = func(data, part)
+            result = func(copy.deepcopy(data), part)
         except:
             print(f"🚫 exception after {runtime:.2f}s")
             raise
