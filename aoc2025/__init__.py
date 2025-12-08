@@ -538,3 +538,9 @@ class Point3:
             self *= factor
             return self
         return self * factor
+
+    def distance(self, other: Point3 | InterpretableTypes) -> float:
+        tpl = self._cast_tuple(other)
+        if isinstance(tpl, Exception):
+            raise TypeError(f"unsupported operand type(s) for distance: '{type(self)}' and '{type(other)}'")
+        return ((self.i - tpl[0])**2 + (self.j - tpl[1])**2 + (self.k - tpl[2])**2)**0.5
