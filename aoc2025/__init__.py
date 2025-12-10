@@ -76,7 +76,9 @@ class Solver:
 
     def solve(
         self,
-        func: Callable[[list[str], Part], int | str | None],
+        func:
+            Callable[[list[str], Part], int | str | None] |
+            tuple[Callable[[list[str]], int | str | None], Callable[[list[str]], int | str | None]],
         /,
         *,
         part: Part,
@@ -134,11 +136,23 @@ class Solver:
         width = max(len(header) + 2, 40)
         print(f"{'━' * width}\n{header}\n{'─' * width}")
 
+        # get the correct solution function to call in case there are two
+        _func: Callable
+        if isinstance(func, tuple):
+            if len(func) != 2:
+                raise ValueError("when providing a tuple of solution functions, it must have exactly two elements")
+            _func = func[0] if part == "a" else func[1]
+            pass_part = False
+        else:
+            _func = func
+            pass_part = True
+
         # run the solution function
         t1 = time.perf_counter()
         runtime: float = 0
+        args = (copy.deepcopy(data),) + ((part,) if pass_part else ())
         try:
-            result = func(copy.deepcopy(data), part)
+            result = _func(*args)  # type: ignore[arg-type]
         except:
             print(f"🚫 exception after {runtime:.2f}s")
             raise
