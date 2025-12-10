@@ -69,7 +69,7 @@ def solution(data: list[str], part: Part) -> int | str | None:
         # effect of components (all 1, one button press per component)
         c = [1] * len(buttons)
 
-        res = scipy.optimize.linprog(A_eq=A, b_eq=b, c=c, integrality=1)  # integer variable
+        res = scipy.optimize.linprog(A_eq=A, b_eq=b, c=c, bounds=(0, None), integrality=1)  # integer variable
 
         return int(res.fun)
 
